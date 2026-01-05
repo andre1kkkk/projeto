@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4f6fb" />
+  <title>Zanus - Transformação Digital</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root{
+      /* Paleta clara baseada na logo */
+      --bg0:#f7f9fc;
+      --bg1:#eef2f8;
+      --bg2:#e2e8f2;
+
+      --text:#1c2434;
+      --muted:rgba(28,36,52,.72);
+
+      --surface:#ffffff;
+      --surface-soft:#f0f4fb;
+      --border:rgba(32,58,85,.12);
+
+      --text-dark:#101829;
+      --muted-dark:#5a6b7b;
+
+      --accent:#1f4e79;          /* azul petróleo */
+      --accent-light:#3fa2ff;    /* highlight */
+      --accent-soft:#7f8c8d;     /* cinza metálico */
+      --accent-glow:rgba(31,78,121,.25);
+
+      --shadow:0 25px 55px rgba(17,34,60,.12);
+      --shadow-soft:0 15px 35px rgba(17,34,60,.10);
+
+      --radius:20px;
+      --max:1120px;
+
+      --hero-image:none;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 0%, rgba(31,78,121,.18), transparent 55%),
+        radial-gradient(900px 450px at 85% 10%, rgba(127,140,141,.15), transparent 58%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 50%,var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    img{max-width:100%;display:block;}
+    a{text-decoration:none;color:inherit;}
+
+    .container{width:min(var(--max),calc(100% - 40px));margin-inline:auto;}
+
+    h1,h2,h3{
+      font-family:"Montserrat",system-ui,sans-serif;
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+    .title-xl{font-weight:900;font-size:clamp(2.4rem,4vw,4.3rem);}
+    .title-lg{font-weight:900;font-size:clamp(1.9rem,2.5vw,2.8rem);text-transform:uppercase;}
+    .lead{font-size:clamp(1.05rem,1.25vw,1.2rem);color:var(--muted);line-height:1.65;max-width:65ch;margin-top:16px;}
+    .text-gradient{
+      background:linear-gradient(120deg,var(--accent) 0%,var(--accent-light) 40%,#a9c7ff 80%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--surface-soft);
+      color:var(--muted-dark);
+      font-size:.78rem;
+      font-weight:700;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .kicker i{color:var(--accent);}
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 22px;
+      border-radius:14px;
+      font-weight:800;
+      border:1px solid transparent;
+      transition:.22s ease;
+      cursor:pointer;
+    }
+    .btn:focus-visible{outline:3px solid rgba(63,162,255,.45);outline-offset:3px;}
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),#2f6ba0);
+      color:#fff;
+      box-shadow:0 18px 42px rgba(31,78,121,.28);
+    }
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 22px 55px rgba(31,78,121,.35);}
+    .btn-ghost{
+      background:var(--surface-soft);
+      border-color:var(--border);
+      color:var(--accent);
+    }
+    .btn-ghost:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 14px 32px rgba(31,78,121,.12);}
+
+    .site-header{
+      position:fixed;top:0;left:0;right:0;z-index:50;
+      background:rgba(247,249,252,.9);
+      border-bottom:1px solid rgba(16,24,41,.08);
+      backdrop-filter:blur(12px);
+    }
+    .header-inner{
+      height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{display:flex;align-items:center;gap:14px;}
+    .logo-img{height:48px;width:auto;filter:drop-shadow(0 6px 18px rgba(16,24,41,.2));}
+    .brand-name{font-weight:900;letter-spacing:.04em;color:var(--text-dark);text-transform:uppercase;}
+
+    .nav{display:flex;align-items:center;gap:10px;}
+    .nav a{
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+      color:var(--muted-dark);
+      transition:.2s ease;
+    }
+    .nav a:hover{background:var(--surface-soft);color:var(--accent);}
+
+    .hero{
+      min-height:100vh;
+      padding:130px 0 80px;
+      display:flex;
+      align-items:center;
+      position:relative;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;inset:0;
+      background:
+        radial-gradient(900px 500px at 50% 15%, rgba(63,162,255,.20), transparent 55%),
+        linear-gradient(180deg,rgba(247,249,252,.95),rgba(247,249,252,.60) 45%,rgba(247,249,252,.95));
+      pointer-events:none;
+    }
+    .hero .container{position:relative;z-index:1;text-align:center;}
+
+    .hero-ctas{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+    .hero-proof{
+      margin-top:34px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+    }
+    .proof-chip{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(31,78,121,.18);
+      background:#fff;
+      color:var(--text-dark);
+      font-weight:700;
+      font-size:.9rem;
+      box-shadow:0 8px 20px rgba(31,78,121,.08);
+    }
+    .proof-chip i{color:var(--accent);}
+
+    .scroll-indicator{
+      margin-top:46px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      color:var(--muted-dark);
+      font-weight:700;
+    }
+    .scroll-indicator i{
+      color:var(--accent);
+      font-size:1.5rem;
+      animation:bounce 1.9s infinite;
+    }
+
+    .section{padding:100px 0;}
+    .section--light{background:#fff;}
+    .section--pale{background:var(--surface-soft);}
+    .section-title{margin-top:16px;}
+
+    .callout{
+      margin-top:22px;
+      padding:20px;
+      border-left:5px solid var(--accent);
+      background:var(--surface-soft);
+      border-radius:14px;
+      color:var(--muted);
+    }
+    .callout strong{color:var(--text-dark);}
+
+    .comparison-wrap{margin-top:40px;display:flex;justify-content:center;}
+    .comparison-container{
+      width:min(960px,100%);
+      aspect-ratio:16/10;
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(16,24,41,.08);
+      position:relative;
+      background:#cfd8e8;
+      user-select:none;
+      touch-action:none;
+    }
+    .comparison-container img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+    .img-overlay{position:absolute;inset:0;width:50%;overflow:hidden;border-right:3px solid var(--accent);}
+    .label{
+      position:absolute;
+      top:16px;
+      padding:9px 14px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:900;
+      letter-spacing:.05em;
+      background:rgba(16,24,41,.65);
+      color:#fff;
+    }
+    .label-before{right:16px;}
+    .label-after{left:16px;background:var(--accent);}
+    .slider-handle{
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:60px;height:60px;
+      border-radius:50%;
+      background:linear-gradient(145deg,#ffffff,#cfd8e8);
+      border:2px solid rgba(16,24,41,.08);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 15px 35px rgba(16,24,41,.18);
+      pointer-events:none;
+      color:var(--accent);
+      font-size:1.2rem;
+    }
+    .compare-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;}
+
+    .hint{margin-top:16px;text-align:center;color:var(--muted-dark);font-weight:700;}
+
+    .grid{
+      margin-top:46px;
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:22px;
+    }
+    .card{
+      grid-column:span 6;
+      background:#fff;
+      border:1px solid rgba(16,24,41,.08);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--shadow-soft);
+      transition:.25s ease;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(16,24,41,.15);}
+    .thumb{
+      width:100%;
+      height:250px;
+      object-fit:cover;
+      border-bottom:4px solid var(--accent);
+    }
+    .card-body{padding:22px;}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.75rem;
+      text-transform:uppercase;
+      font-weight:900;
+      background:rgba(31,78,121,.08);
+      color:var(--accent);
+    }
+    .card-title{margin-top:12px;font-size:1.35rem;color:var(--text-dark);}
+    .card-text{margin-top:10px;color:var(--muted-dark);line-height:1.65;}
+
+    .video-shell{
+      margin-top:40px;
+      border-radius:22px;
+      border:1px solid rgba(16,24,41,.08);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:#000;
+    }
+    .video-shell video,
+    .video-shell iframe{width:100%;aspect-ratio:16/9;display:block;}
+
+    .services{
+      margin-top:46px;
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:18px;
+    }
+    .service{
+      grid-column:span 4;
+      border-radius:18px;
+      padding:24px;
+      background:#fff;
+      border:1px solid rgba(16,24,41,.08);
+      box-shadow:var(--shadow-soft);
+      transition:.25s ease;
+    }
+    .service:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 25px 55px rgba(16,24,41,.15);}
+    .service i{font-size:2rem;color:var(--accent);margin-bottom:12px;}
+    .service p{margin-top:10px;color:var(--muted-dark);line-height:1.6;}
+
+    footer{
+      padding:100px 0;
+      background:linear-gradient(180deg,#fff, #eef3fb);
+      border-top:1px solid rgba(16,24,41,.08);
+    }
+    .footer-card{
+      border-radius:26px;
+      padding:40px 32px;
+      background:#fff;
+      border:1px solid rgba(16,24,41,.08);
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .footer-card p{margin-top:18px;color:var(--muted-dark);line-height:1.7;}
+    .footer-ctas{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;}
+    .btn-instagram{
+      background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);
+      color:#fff;
+      box-shadow:0 18px 45px rgba(220,39,67,.25);
+    }
+    .btn-instagram:hover{transform:translateY(-3px);}
+    .btn-whatsapp{
+      background:linear-gradient(135deg,#25d366,#128c7e);
+      color:#fff;
+      box-shadow:0 18px 42px rgba(18,140,126,.25);
+    }
+    .btn-whatsapp:hover{transform:translateY(-3px);}
+    .copyright{margin-top:24px;color:rgba(28,36,52,.55);font-size:.9rem;}
+
+    .brush-container{display:none;} /* pincel desativado nesta versão clara */
+
+    @keyframes bounce{
+      0%,20%,50%,80%,100%{transform:translateY(0);}
+      40%{transform:translateY(-10px);}
+      60%{transform:translateY(-5px);}
+    }
+
+    @media(max-width:960px){
+      .nav{display:none;}
+      .card,.service{grid-column:span 12;}
+    }
+    @media(max-width:640px){
+      .hero-ctas{flex-direction:column;}
+      .footer-ctas{flex-direction:column;}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#topo">
+        <img class="logo-img" src="logo.png" alt="Zanus Logo" />
+        <span class="brand-name">Zanus</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#transformacao">Transformação</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#video">Vídeo</a>
+        <a href="#contato" class="btn btn-primary" style="padding:10px 16px;">
+          <i class="fa-solid fa-bolt"></i> Fazer orçamento
+        </a>
+      </nav>
+
+      <a href="#contato" class="btn btn-primary" style="padding:10px 16px;">
+        <i class="fa-solid fa-comment-dots"></i> Fale conosco
+      </a>
+    </div>
+  </header>
+
+  <main id="topo">
+    <section class="hero">
+      <div class="container">
+        <span class="kicker"><i class="fa-solid fa-wand-magic-sparkles"></i> Design • Foto • Vídeo</span>
+        <h1 class="title-xl">
+          Transformamos negócios<br>
+          <span class="text-gradient">em experiências visuais</span>
+        </h1>
+        <p class="lead">Sites personalizados, fotografia de impacto e vídeos que prendem atenção. Se a sua vitrine não faz o cliente parar, ela está trabalhando contra você.</p>
+
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#contato">
+            <i class="fa-solid fa-arrow-right"></i> Quero um site que vende
+          </a>
+          <a class="btn btn-ghost" href="#portfolio">
+            <i class="fa-regular fa-images"></i> Ver portfólio
+          </a>
+        </div>
+
+        <div class="hero-proof">
+          <span class="proof-chip"><i class="fa-solid fa-mobile-screen"></i> Responsivo de verdade</span>
+          <span class="proof-chip"><i class="fa-solid fa-gauge-high"></i> Performance + SEO</span>
+          <span class="proof-chip"><i class="fa-solid fa-camera-retro"></i> Foto com apetite appeal</span>
+          <span class="proof-chip"><i class="fa-solid fa-film"></i> Vídeos para Reels/TikTok</span>
+        </div>
+
+        <div class="scroll-indicator">
+          <span>Role para ver a diferença</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light" id="transformacao">
+      <div class="container">
+        <span class="kicker"><i class="fa-solid fa-sliders"></i> Antes / Depois</span>
+        <h2 class="title-lg section-title">Você comeria esta foto?</h2>
+        <p class="callout">
+          O cérebro decide em instantes se algo “parece bom”. Se a sua imagem não dá água na boca, você perde cliques, mensagens e vendas.<br><br>
+          <strong>Arraste para ver a transformação:</strong>
+        </p>
+
+        <div class="comparison-wrap">
+          <div class="comparison-container" id="comparison">
+            <!-- TODO: IMAGEM ANTES -->
+            <img src="iamgem andre.png" alt="ANTES - Foto amadora" loading="lazy" decoding="async">
+            <span class="label label-before">ANTES</span>
+
+            <div class="img-overlay" id="overlay">
+              <!-- TODO: IMAGEM DEPOIS -->
+              <img src="foto13.webp" alt="DEPOIS - Foto profissional" loading="lazy" decoding="async">
+              <span class="label label-after">DEPOIS</span>
+            </div>
+
+            <div class="slider-handle" id="handle">
+              <i class="fa-solid fa-left-right"></i>
+            </div>
+            <input class="compare-range" id="range" type="range" min="0" max="100" value="50" aria-label="Controle de comparação antes e depois">
+          </div>
+        </div>
+
+        <p class="hint">No celular, arraste com o dedo em cima da imagem.</p>
+      </div>
+    </section>
+
+    <section class="section section--pale" id="portfolio">
+      <div class="container">
+        <span class="kicker"><i class="fa-solid fa-layer-group"></i> Portfólio</span>
+        <h2 class="title-lg section-title">Sites que vendem sozinhos</h2>
+        <p class="section-lead lead">Não entregamos “páginas”. Entregamos uma vitrine com foco em conversão: visual forte, CTA claro, velocidade e estrutura pra gerar confiança.</p>
+
+        <div class="grid">
+          <a class="card" href="https://mistertruffas.lovable.app/" target="_blank" rel="noopener noreferrer">
+            <!-- TODO: THUMB 1 -->
+            <img class="thumb" src="foto1.png" alt="Site Mister Truffas" loading="lazy" decoding="async">
+            <div class="card-body">
+              <span class="pill"><i class="fa-solid fa-bag-shopping"></i> E-commerce de doces</span>
+              <h3 class="card-title">Mister Truffas</h3>
+              <p class="card-text">Design sofisticado para elevar valor percebido e deixar o produto premium do jeito certo.</p>
+            </div>
+          </a>
+
+          <a class="card" href="https://zanuslojasiteteste.lovable.app/" target="_blank" rel="noopener noreferrer">
+            <!-- TODO: THUMB 2 -->
+            <img class="thumb" src="foto2.png" alt="Site Pizzaria" loading="lazy" decoding="async">
+            <div class="card-body">
+              <span class="pill"><i class="fa-brands fa-whatsapp"></i> Delivery / Institucional</span>
+              <h3 class="card-title">Sua Empresa Pizzeria</h3>
+              <p class="card-text">Foco total em apetite appeal e contato rápido. Menos cliques perdidos, mais pedidos.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light" id="video">
+      <div class="container">
+        <span class="kicker"><i class="fa-solid fa-clapperboard"></i> Vídeo</span>
+        <h2 class="title-lg section-title">O poder do movimento</h2>
+        <p class="lead">Vídeo aumenta retenção e confiança quando é bem feito. A gente roteiriza, grava/edita e entrega pronto para anúncio, Reels e institucional.</p>
+
+        <div class="video-shell">
+            <video controls playsinline preload="metadata" poster="">
+          <!-- TODO: SUBSTITUA PELO SEU ARQUIVO OU IFRAME -->
+            <source src="video - hamburguer.mp4" type="video/mp4">
+            Seu navegador não suporta vídeo HTML5.
+          </video>
+        </div>
+
+        <div class="services">
+          <div class="service">
+            <i class="fa-solid fa-camera"></i>
+            <h3>Fotografia</h3>
+            <p>Edição high-end e composição que desperta desejo, especialmente para comida e produto.</p>
+          </div>
+          <div class="service">
+            <i class="fa-solid fa-laptop-code"></i>
+            <h3>Web Design</h3>
+            <p>Sites rápidos, responsivos, com CTA forte e estrutura pensada para converter.</p>
+          </div>
+          <div class="service">
+            <i class="fa-solid fa-film"></i>
+            <h3>Vídeo Maker</h3>
+            <p>Produção e edição para Reels, TikTok e Ads — ritmo, cortes e cor com cara premium.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contato">
+      <div class="container">
+        <div class="footer-card">
+          <h2>Pronto para evoluir?</h2>
+          <p>Se você quer uma marca com cara grande (e que fecha mais), me chama. A gente te mostra um caminho claro: visual, oferta e execução.</p>
+
+          <div class="footer-ctas">
+            <!-- TODO: Instagram -->
+            <a class="btn btn-instagram" href="https://www.instagram.com/zanus_loja/" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-instagram"></i> Chamar no Instagram
+            </a>
+
+            <!-- TODO: WhatsApp -->
+            <a class="btn btn-whatsapp" href="https://wa.me/554989081330" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-whatsapp"></i> Chamar no WhatsApp
+            </a>
+          </div>
+
+          <div class="copyright">
+            &copy; 2026 Zanus. Todos os direitos reservados.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const comparison = document.getElementById("comparison");
+    const overlay = document.getElementById("overlay");
+    const handle = document.getElementById("handle");
+    const range = document.getElementById("range");
+
+    function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+
+    function setPosition(percent){
+      const p = clamp(percent,0,100);
+      overlay.style.width = p + "%";
+      handle.style.left = p + "%";
+      range.value = p;
+    }
+
+    range.addEventListener("input",(e)=>setPosition(Number(e.target.value)));
+
+    let dragging=false;
+    function updateFromPointer(e){
+      const rect=comparison.getBoundingClientRect();
+      const x=e.clientX-rect.left;
+      const p=(x/rect.width)*100;
+      setPosition(p);
+    }
+
+    comparison.addEventListener("pointerdown",(e)=>{
+      dragging=true;
+      comparison.setPointerCapture(e.pointerId);
+      updateFromPointer(e);
+    });
+    comparison.addEventListener("pointermove",(e)=>{
+      if(!dragging) return;
+      updateFromPointer(e);
+    });
+    comparison.addEventListener("pointerup",()=>dragging=false);
+    comparison.addEventListener("pointercancel",()=>dragging=false);
+
+    setPosition(50);
+  </script>
+</body>
+</html>
